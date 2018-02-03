@@ -15,6 +15,26 @@ const rl = readline.createInterface({
 board.on('ready', function() {
 
       const led = new five.Led('P1-7');
+      const button = new five.Button({
+        pin: 'P1-11',
+        isPullup: true
+      });
+
+      button.on("hold", function() {
+        console.log( "Button held" );
+      });
+
+      button.on("press", function() {
+        console.log( "Button pressed" );
+        led.stop().off();
+        led.on();
+      });
+
+      button.on("release", function() {
+        console.log( "Button released" );
+        led.stop().off();
+      });
+
 
       this.repl.inject({
               on: () => {
