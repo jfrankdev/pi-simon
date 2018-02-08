@@ -14,20 +14,22 @@ const rl = readline.createInterface({
 
 board.on('ready', function() {
 
-      const led = new five.Led('P1-7');
+      const led = new five.Led('P1-7'); //p1-7 is red, p1-16 is yellow, p1-18 is green
       const button = new five.Button({
-        pin: 'P1-11',
+        pin: 'P1-15', //p1-15 is left, p1-13 is center, p1-11 is right
         isPullup: true
       });
 
       button.on("hold", function() {
         console.log( "Button held" );
+        led.stop().off();
+        led.blink(60);
       });
 
       button.on("press", function() {
         console.log( "Button pressed" );
         led.stop().off();
-        led.on();
+        led.blink(6000);
       });
 
       button.on("release", function() {
