@@ -12,6 +12,19 @@ const rl = readline.createInterface({
   terminal: false
 });
 
+let sequence = [];
+
+ function randomNumber () {
+  return Math.floor((Math.random()*3)+1);
+}
+
+let i = 0;
+while (i < 3) {
+sequence.push(randomNumber());
+i++;
+}
+console.log(sequence)
+
 board.on('ready', function() {
 
       const LED_RED = new five.Led('P1-7'); //p1-7 is red, p1-16 is yellow, p1-18 is green
@@ -65,5 +78,31 @@ board.on('ready', function() {
         console.log( "Button released" );
         LED_GREEN.stop().off();
       });
+
+
+      sequence.forEach(function(i) {
+        switch(true) {
+          case (i === 1):
+
+          setTimeout(function(){ LED_RED.on(); }, 0);
+          setTimeout(function(){ LED_RED.off(); }, 2000);
+
+              break;
+          case (i === 2):
+
+          setTimeout(function(){ LED_YELLOW.on(); }, 0);
+          setTimeout(function(){ LED_YELLOW.off(); }, 2000);
+
+              break;
+          case (i === 3):
+
+          setTimeout(function(){ LED_GREEN.on(); }, 0);
+          setTimeout(function(){ LED_GREEN.off(); }, 2000);
+
+              break;
+          default:
+      }
+      });
+
 
 });
