@@ -14,69 +14,56 @@ const rl = readline.createInterface({
 
 board.on('ready', function() {
 
-      const led = new five.Led('P1-7'); //p1-7 is red, p1-16 is yellow, p1-18 is green
-      const button = new five.Button({
+      const LED_RED = new five.Led('P1-7'); //p1-7 is red, p1-16 is yellow, p1-18 is green
+      const LED_YELLOW = new five.Led('P1-16');
+      const LED_GREEN = new five.Led('P1-18');
+
+      const BTN_RED = new five.Button({
         pin: 'P1-15', //p1-15 is left, p1-13 is center, p1-11 is right
         isPullup: true
       });
 
-      button.on("hold", function() {
+      const BTN_YELLOW = new five.Button({
+        pin: 'P1-13',
+        isPullup: true
+      });
+
+      const BTN_GREEN = new five.Button({
+        pin: 'P1-11',
+        isPullup: true
+      });
+
+      BTN_RED.on("hold", function() {
         console.log( "Button held" );
-        led.stop().off();
-        led.blink(60);
+        LED_RED.stop().off();
+        LED_RED.blink(60);
       });
 
-      button.on("press", function() {
-        console.log( "Button pressed" );
-        led.stop().off();
-        led.blink(6000);
-      });
-
-      button.on("release", function() {
+      BTN_RED.on("release", function() {
         console.log( "Button released" );
-        led.stop().off();
+        LED_RED.stop().off();
       });
 
-
-      this.repl.inject({
-              on: () => {
-                      led.on();
-              },
-              off: () => {
-                      led.stop().off();
-              },
-              strobe: () => {
-                      led.stop().off();
-                      led.strobe();
-              },
-              blink: () => {
-                      led.stop().off();
-                      led.blink(6000);
-              },
+      BTN_YELLOW.on("hold", function() {
+        console.log( "Button held" );
+        LED_YELLOW.stop().off();
+        LED_YELLOW.blink(60);
       });
 
+      BTN_YELLOW.on("release", function() {
+        console.log( "Button released" );
+        LED_YELLOW.stop().off();
+      });
 
-      const recursiveAsyncReadLine = function () {
-        rl.question('Command: ', function (answer) {
-          switch(answer) {
-            case 'on':
-                log('Got it! Your answer was: "', answer, '"');
-                led.on();
-                break;
-            case 'off':
-                log('Got it! Your answer was: "', answer, '"');
-                led.stop().off();
-                break;
-            case 'blink':
-                log('Got it! Your answer was: "', answer, '"');
-                led.stop().strobe();
-                break;
-            default:
-        }
-        recursiveAsyncReadLine();
-        });
-      };
+      BTN_GREEN.on("hold", function() {
+        console.log( "Button held" );
+        LED_GREEN.stop().off();
+        LED_GREEN.blink(60);
+      });
 
-recursiveAsyncReadLine();
+      BTN_GREEN.on("release", function() {
+        console.log( "Button released" );
+        LED_GREEN.stop().off();
+      });
 
 });
