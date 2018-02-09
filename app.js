@@ -80,29 +80,26 @@ board.on('ready', function() {
       });
 
 
-      sequence.forEach(function(i) {
-        switch(true) {
-          case (i === 1):
-
-          setTimeout(function(){ LED_RED.on(); }, 0);
-          setTimeout(function(){ LED_RED.off(); }, 2000);
-
-              break;
-          case (i === 2):
-
-          setTimeout(function(){ LED_YELLOW.on(); }, 0);
-          setTimeout(function(){ LED_YELLOW.off(); }, 2000);
-
-              break;
-          case (i === 3):
-
-          setTimeout(function(){ LED_GREEN.on(); }, 0);
-          setTimeout(function(){ LED_GREEN.off(); }, 2000);
-
-              break;
-          default:
+      function delay() {
+        return new Promise(resolve => setTimeout(resolve, 2000));
       }
-      });
+
+      async function delayedLog(item) {
+        await delay();
+        console.log(item);
+      }
+
+      async function processArray(array) {
+        for (const item of array) {
+          LED_RED.on();
+          await delayedLog(item);
+        }
+        console.log('Done!');
+        LED_RED.off();
+      }
+
+      processArray(sequence);
+
 
 
 });
