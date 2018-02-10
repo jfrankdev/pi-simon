@@ -19,7 +19,7 @@ let sequence = [];
 }
 
 let i = 0;
-while (i < 3) {
+while (i < 200000) {
 sequence.push(randomNumber());
 i++;
 }
@@ -80,26 +80,34 @@ board.on('ready', function() {
       });
 
 
-      function delay() {
-        return new Promise(resolve => setTimeout(resolve, 2000));
+      function delay(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration));
       }
 
       async function delayedLog(item) {
-        await delay();
         console.log(item);
+        await delay(50);
+        LED_RED.off();
+        await delay(50);
+        LED_GREEN.off();
+        await delay(50);
+        LED_YELLOW.off();
+        await delay(50);
       }
 
       async function processArray(array) {
         for (const item of array) {
-          LED_RED.on();
+          if(item===1){LED_RED.on();}
+
+          if(item===2){LED_GREEN.on();}
+
+          if(item===3){LED_YELLOW.on();}
           await delayedLog(item);
+
         }
         console.log('Done!');
-        LED_RED.off();
       }
 
       processArray(sequence);
-
-
 
 });
