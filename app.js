@@ -19,7 +19,7 @@ let sequence = [];
 }
 
 let i = 0;
-while (i < 200000) {
+while (i < 10) {
 sequence.push(randomNumber());
 i++;
 }
@@ -27,57 +27,52 @@ console.log(sequence)
 
 board.on('ready', function() {
 
-      const LED_RED = new five.Led('P1-7'); //p1-7 is red, p1-16 is yellow, p1-18 is green
+      const LED_RED = new five.Led('P1-7');
       const LED_YELLOW = new five.Led('P1-16');
       const LED_GREEN = new five.Led('P1-18');
 
-      const BTN_RED = new five.Button({
-        pin: 'P1-15', //p1-15 is left, p1-13 is center, p1-11 is right
-        isPullup: true
+      const BTN_RED = new five.Button({pin: 'P1-15', isPullup: true});
+      const BTN_YELLOW = new five.Button({pin: 'P1-13',isPullup: true});
+      const BTN_GREEN = new five.Button({ pin: 'P1-11', isPullup: true});
+
+
+
+
+      let pressCounter = [];
+
+      BTN_RED.on("press", function() {
+        pressCounter.push(1);
+        console.log(pressCounter);
+        grabPresses();
       });
 
-      const BTN_YELLOW = new five.Button({
-        pin: 'P1-13',
-        isPullup: true
+      BTN_YELLOW.on("press", function() {
+        pressCounter.push(3);
+        console.log(pressCounter);
+        grabPresses();
       });
 
-      const BTN_GREEN = new five.Button({
-        pin: 'P1-11',
-        isPullup: true
+      BTN_GREEN.on("press", function() {
+        pressCounter.push(2);
+        console.log(pressCounter);
+        grabPresses();
       });
 
-      BTN_RED.on("hold", function() {
-        console.log( "Button held" );
-        LED_RED.stop().off();
-        LED_RED.blink(60);
-      });
 
-      BTN_RED.on("release", function() {
-        console.log( "Button released" );
-        LED_RED.stop().off();
-      });
+        //grabs 10 btn presses, logs them then returns the data
+        var grabPresses = function () {
 
-      BTN_YELLOW.on("hold", function() {
-        console.log( "Button held" );
-        LED_YELLOW.stop().off();
-        LED_YELLOW.blink(60);
-      });
+          if(pressCounter.length >= 10){
+            //sequence.concat(pressCounter);
+            processArray(pressCounter);
+            pressCounter = [];
+          }else {
+            console.log('Need more presses');
+            }
 
-      BTN_YELLOW.on("release", function() {
-        console.log( "Button released" );
-        LED_YELLOW.stop().off();
-      });
+        };
 
-      BTN_GREEN.on("hold", function() {
-        console.log( "Button held" );
-        LED_GREEN.stop().off();
-        LED_GREEN.blink(60);
-      });
 
-      BTN_GREEN.on("release", function() {
-        console.log( "Button released" );
-        LED_GREEN.stop().off();
-      });
 
 
       function delay(duration) {
@@ -107,7 +102,7 @@ board.on('ready', function() {
         }
         console.log('Done!');
       }
-
+      //grabPresses()
       processArray(sequence);
 
 });
