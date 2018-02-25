@@ -8,8 +8,25 @@ const rl = readline.createInterface({input: process.stdin,output: process.stdout
 //initialize raspberry pi board
 board.on('ready', function() {
 
-      //the array of random numbers to feed the LEDs
-      let sequence = [];
+      //the array of random numbers created by computer to feed the LEDs
+      let CPU_SEQUENCE = [];
+
+      //the array of numbers created by the user to compare to the CPU_SEQUENCE array
+      let USER_SEQUENCE = [];
+
+      //generate random number between 1 and 3
+       function randomNumber () {
+        return Math.floor((Math.random()*3)+1);
+      }
+
+      //counter variable
+      let i = 0;
+
+      //add 3 random numbers to the sequence array
+      while (i < 3) {
+        CPU_SEQUENCE.push(randomNumber());
+        i++;
+      }
 
       //init LEDs
       const LED_RED = new five.Led('P1-7');
@@ -21,39 +38,34 @@ board.on('ready', function() {
       const BTN_YELLOW = new five.Button({pin: 'P1-13',isPullup: true});
       const BTN_GREEN = new five.Button({ pin: 'P1-11', isPullup: true});
 
-      //init the array that counts button presses
-      let pressCounter = [];
-
       //listen for red button presses
       BTN_RED.on("press", function() {
-        pressCounter.push(1);
-        console.log(pressCounter);
+        USER_SEQUENCE.push(1);
+        //console.log(pressCounter);
         grabPresses();
       });
 
       //listen for yellow button presses
       BTN_YELLOW.on("press", function() {
-        pressCounter.push(3);
-        console.log(pressCounter);
+        USER_SEQUENCE.push(2);
+        //console.log(pressCounter);
         grabPresses();
       });
 
       //listen for green button presses
       BTN_GREEN.on("press", function() {
-        pressCounter.push(2);
-        console.log(pressCounter);
+        USER_SEQUENCE.push(3);
+      //  console.log(pressCounter);
         grabPresses();
       });
 
       //waits for 10 btn presses then runs the processArray function
       var grabPresses = function () {
 
-        if(pressCounter.length >= 10){
-          processArray(pressCounter);
-          pressCounter = [];
-        }else {
-          console.log('Need more presses');
-          }
+        if(USER_SEQUENCE.length === 3){
+          countIt();
+          //USER_SEQUENCE = [];
+        }
       };
 
       function delay(duration) {
@@ -76,12 +88,29 @@ board.on('ready', function() {
         for (const item of array) {
           if(item===1){LED_RED.on();}
 
-          if(item===2){LED_GREEN.on();}
+          if(item===2){LED_YELLOW.on();}
 
-          if(item===3){LED_YELLOW.on();}
+          if(item===3){LED_GREEN.on();}
           await delayedLog(item);
         }
-        console.log('Done!');
+        //console.log('Done!');
       }
-      processArray(sequence);
+
+      processArray(CPU_SEQUENCE);
+
+function countIt () {
+      var counter = 0;
+
+      while (counter < CPU_SEQUENCE.length){
+      	  if(CPU_SEQUENCE[counter] === USER_SEQUENCE[counter]){
+          console.log('correct selection')
+          counter++;
+          } else {
+          console.log('wrong selection')
+          counter++;
+          }
+          //processArray(USER_SEQUENCE);
+      }
+processArray(USER_SEQUENCE);
+    }
 });
