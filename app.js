@@ -12,46 +12,54 @@ const rl = readline.createInterface({
   terminal: false
 });
 
+//the array of random numbers to feed the LEDs
 let sequence = [];
 
+//generate random number between 1 and 3
  function randomNumber () {
   return Math.floor((Math.random()*3)+1);
 }
 
+//counter variable
 let i = 0;
-while (i < 10) {
-sequence.push(randomNumber());
-i++;
-}
-console.log(sequence)
 
+//add 10 random numbers to the sequence array
+while (i < 10) {
+  sequence.push(randomNumber());
+  i++;
+}
+
+//initialize raspberry pi board
 board.on('ready', function() {
 
+      //init LEDs
       const LED_RED = new five.Led('P1-7');
       const LED_YELLOW = new five.Led('P1-16');
       const LED_GREEN = new five.Led('P1-18');
 
+      //init buttons
       const BTN_RED = new five.Button({pin: 'P1-15', isPullup: true});
       const BTN_YELLOW = new five.Button({pin: 'P1-13',isPullup: true});
       const BTN_GREEN = new five.Button({ pin: 'P1-11', isPullup: true});
 
-
-
-
+      //init the array that counts button presses
       let pressCounter = [];
 
+      //listen for red button presses
       BTN_RED.on("press", function() {
         pressCounter.push(1);
         console.log(pressCounter);
         grabPresses();
       });
 
+      //listen for yellow button presses
       BTN_YELLOW.on("press", function() {
         pressCounter.push(3);
         console.log(pressCounter);
         grabPresses();
       });
 
+      //listen for green button presses
       BTN_GREEN.on("press", function() {
         pressCounter.push(2);
         console.log(pressCounter);
@@ -59,11 +67,10 @@ board.on('ready', function() {
       });
 
 
-        //grabs 10 btn presses, logs them then returns the data
+        //waits for 10 btn presses then runs the processArray function
         var grabPresses = function () {
 
           if(pressCounter.length >= 10){
-            //sequence.concat(pressCounter);
             processArray(pressCounter);
             pressCounter = [];
           }else {
@@ -90,6 +97,7 @@ board.on('ready', function() {
         await delay(50);
       }
 
+      //looks at each element in array and lights up each LED based on number code created on lines 48-67
       async function processArray(array) {
         for (const item of array) {
           if(item===1){LED_RED.on();}
