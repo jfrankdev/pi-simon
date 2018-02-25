@@ -2,35 +2,14 @@ const readline = require('readline');
 const log = console.log;
 const five = require('johnny-five');
 const raspi = require('raspi-io');
-const board = new five.Board({
-       io: new raspi(),
-});
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: false
-});
-
-//the array of random numbers to feed the LEDs
-let sequence = [];
-
-//generate random number between 1 and 3
- function randomNumber () {
-  return Math.floor((Math.random()*3)+1);
-}
-
-//counter variable
-let i = 0;
-
-//add 10 random numbers to the sequence array
-while (i < 10) {
-  sequence.push(randomNumber());
-  i++;
-}
+const board = new five.Board({io: new raspi()});
+const rl = readline.createInterface({input: process.stdin,output: process.stdout,terminal: false});
 
 //initialize raspberry pi board
 board.on('ready', function() {
+
+      //the array of random numbers to feed the LEDs
+      let sequence = [];
 
       //init LEDs
       const LED_RED = new five.Led('P1-7');
@@ -66,21 +45,16 @@ board.on('ready', function() {
         grabPresses();
       });
 
+      //waits for 10 btn presses then runs the processArray function
+      var grabPresses = function () {
 
-        //waits for 10 btn presses then runs the processArray function
-        var grabPresses = function () {
-
-          if(pressCounter.length >= 10){
-            processArray(pressCounter);
-            pressCounter = [];
-          }else {
-            console.log('Need more presses');
-            }
-
-        };
-
-
-
+        if(pressCounter.length >= 10){
+          processArray(pressCounter);
+          pressCounter = [];
+        }else {
+          console.log('Need more presses');
+          }
+      };
 
       function delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
@@ -106,11 +80,8 @@ board.on('ready', function() {
 
           if(item===3){LED_YELLOW.on();}
           await delayedLog(item);
-
         }
         console.log('Done!');
       }
-      //grabPresses()
       processArray(sequence);
-
 });
