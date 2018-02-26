@@ -14,6 +14,9 @@ board.on('ready', function() {
       //the array of numbers created by the user to compare to the CPU_SEQUENCE array
       let USER_SEQUENCE = [];
 
+      //populates CPU_SEQUENCE array then processes it
+      function createCPU_SEQUENCE () {
+
       //generate random number between 1 and 3
        function randomNumber () {
         return Math.floor((Math.random()*3)+1);
@@ -26,6 +29,9 @@ board.on('ready', function() {
       while (i < 3) {
         CPU_SEQUENCE.push(randomNumber());
         i++;
+        }
+        console.log(CPU_SEQUENCE);
+        processArray(CPU_SEQUENCE);
       }
 
       //init LEDs
@@ -70,7 +76,6 @@ board.on('ready', function() {
 
       //logs the LED number codes, waits for a time and then turns off any LEDs
       async function delayedLog(item) {
-        console.log(item);
         await delay(50);
         LED_RED.off();
         await delay(50);
@@ -106,6 +111,13 @@ function compareSequences () {
           }
       }
       processArray(USER_SEQUENCE);
+      CPU_SEQUENCE = [];
+      USER_SEQUENCE = [];
+      createCPU_SEQUENCE();
     }
-      processArray(CPU_SEQUENCE);
+
+
+      createCPU_SEQUENCE();
+
+
 });
