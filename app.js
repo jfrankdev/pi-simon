@@ -46,20 +46,35 @@ board.on('ready', function() {
 
       //listen for red button presses
       BTN_RED.on("press", function() {
+        LED_RED.on();
         USER_SEQUENCE.push(1);
         grabPresses();
       });
 
+      BTN_RED.on("release", function() {
+        LED_RED.off();
+      });
+
       //listen for yellow button presses
       BTN_YELLOW.on("press", function() {
+        LED_YELLOW.on();
         USER_SEQUENCE.push(2);
         grabPresses();
       });
 
+      BTN_YELLOW.on("release", function() {
+        LED_YELLOW.off();
+      });
+
       //listen for green button presses
       BTN_GREEN.on("press", function() {
+        LED_GREEN.on();
         USER_SEQUENCE.push(3);
         grabPresses();
+      });
+
+      BTN_GREEN.on("release", function() {
+        LED_GREEN.off();
       });
 
       //waits for 3 btn presses then runs the compareSequences() function
@@ -76,13 +91,13 @@ board.on('ready', function() {
 
       //logs the LED number codes, waits for a time and then turns off any LEDs
       async function delayedLog(item) {
-        await delay(50);
+        await delay(350);
         LED_RED.off();
-        await delay(50);
+        await delay(350);
         LED_GREEN.off();
-        await delay(50);
+        await delay(350);
         LED_YELLOW.off();
-        await delay(50);
+        await delay(350);
       }
 
       //looks at each element in array and lights up each LED based on number code created on lines 48-67
@@ -98,22 +113,21 @@ board.on('ready', function() {
       }
 
       //compares the user sequence and cpu sequence arrays
-function compareSequences () {
-      var counter = 0;
+      function compareSequences () {
+        var counter = 0;
 
-      while (counter < CPU_SEQUENCE.length){
-      	  if(CPU_SEQUENCE[counter] === USER_SEQUENCE[counter]){
-          console.log('correct selection')
-          counter++;
-          } else {
-          console.log('wrong selection')
-          counter++;
-          }
-      }
-      processArray(USER_SEQUENCE);
-      CPU_SEQUENCE = [];
-      USER_SEQUENCE = [];
-      createCPU_SEQUENCE();
+        while (counter < CPU_SEQUENCE.length){
+        	  if(CPU_SEQUENCE[counter] === USER_SEQUENCE[counter]){
+            console.log('correct selection')
+            counter++;
+            } else {
+            console.log('wrong selection')
+            counter++;
+            }
+        }
+        CPU_SEQUENCE = [];
+        USER_SEQUENCE = [];
+        createCPU_SEQUENCE();
     }
 
 
