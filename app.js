@@ -41,37 +41,34 @@ board.on('ready', function() {
       //listen for red button presses
       BTN_RED.on("press", function() {
         USER_SEQUENCE.push(1);
-        //console.log(pressCounter);
         grabPresses();
       });
 
       //listen for yellow button presses
       BTN_YELLOW.on("press", function() {
         USER_SEQUENCE.push(2);
-        //console.log(pressCounter);
         grabPresses();
       });
 
       //listen for green button presses
       BTN_GREEN.on("press", function() {
         USER_SEQUENCE.push(3);
-      //  console.log(pressCounter);
         grabPresses();
       });
 
-      //waits for 10 btn presses then runs the processArray function
+      //waits for 3 btn presses then runs the compareSequences() function
       var grabPresses = function () {
-
         if(USER_SEQUENCE.length === 3){
-          countIt();
-          //USER_SEQUENCE = [];
+          compareSequences();
         }
       };
 
+      //called to delay the switching off of an LED
       function delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
       }
 
+      //logs the LED number codes, waits for a time and then turns off any LEDs
       async function delayedLog(item) {
         console.log(item);
         await delay(50);
@@ -93,12 +90,10 @@ board.on('ready', function() {
           if(item===3){LED_GREEN.on();}
           await delayedLog(item);
         }
-        //console.log('Done!');
       }
 
-      processArray(CPU_SEQUENCE);
-
-function countIt () {
+      //compares the user sequence and cpu sequence arrays
+function compareSequences () {
       var counter = 0;
 
       while (counter < CPU_SEQUENCE.length){
@@ -109,8 +104,8 @@ function countIt () {
           console.log('wrong selection')
           counter++;
           }
-          //processArray(USER_SEQUENCE);
       }
-processArray(USER_SEQUENCE);
+      processArray(USER_SEQUENCE);
     }
+      processArray(CPU_SEQUENCE);
 });
