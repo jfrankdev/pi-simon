@@ -113,7 +113,7 @@ board.on('ready', function() {
       }
 
       //compares the user sequence and cpu sequence arrays
-      function compareSequences () {
+      async function compareSequences () {
         var counter = 0;
 
         while (counter < CPU_SEQUENCE.length){
@@ -127,6 +127,7 @@ board.on('ready', function() {
         }
         CPU_SEQUENCE = [];
         USER_SEQUENCE = [];
+        await delay(2000); //time inbetween rounds 
         createCPU_SEQUENCE();
     }
 
