@@ -26,7 +26,7 @@ board.on('ready', function() {
       let i = 0;
 
       //add 3 random numbers to the sequence array
-      while (i < 3) {
+      while (i < 1) {
         CPU_SEQUENCE.push(randomNumber());
         i++;
         }
@@ -79,7 +79,7 @@ board.on('ready', function() {
 
       //waits for 3 btn presses then runs the compareSequences() function
       var grabPresses = function () {
-        if(USER_SEQUENCE.length === 3){
+        if(USER_SEQUENCE.length === CPU_SEQUENCE.length){
           compareSequences();
         }
       };
@@ -125,9 +125,9 @@ board.on('ready', function() {
             counter++;
             }
         }
-        CPU_SEQUENCE = [];
+        //CPU_SEQUENCE = [];
         USER_SEQUENCE = [];
-        await delay(2000); //time inbetween rounds 
+        await delay(2000); //time inbetween rounds
         createCPU_SEQUENCE();
     }
 
