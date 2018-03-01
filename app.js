@@ -15,7 +15,18 @@ board.on('ready', function() {
       let USER_SEQUENCE = [];
 
       //populates CPU_SEQUENCE array then processes it
-      function createCPU_SEQUENCE () {
+    async function createCPU_SEQUENCE (trueorfalse) {
+
+      //called to delay the switching off of an LED
+      function delay(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration));
+      }
+
+      if (trueorfalse === 0) {
+      await delay(5000);
+      console.log('start');
+      trueorfalse++;
+      }
 
       //generate random number between 1 and 3
        function randomNumber () {
@@ -87,6 +98,7 @@ board.on('ready', function() {
         }
       };
 
+
       //called to delay the switching off of an LED
       function delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
@@ -134,8 +146,10 @@ board.on('ready', function() {
         createCPU_SEQUENCE();
     }
 
-            // Plays a song
-        BUZZER.play({
+    // Plays a song
+    function playSong () {
+
+         BUZZER.play({
           // song is composed by an array of pairs of notes and beats
           // The first argument is the note (null means "no note")
           // The second argument is the length of time (beat) of the note (or non-note)
@@ -160,11 +174,13 @@ board.on('ready', function() {
             [null, 1 / 2]
           ],
           tempo: 100
+
         });
 
+      }
 
-
-      createCPU_SEQUENCE();
+      playSong();
+      createCPU_SEQUENCE(0);
 
 
 });
