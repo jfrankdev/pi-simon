@@ -136,6 +136,7 @@ board.on('ready', function() {
             console.log('correct selection')
             counter++;
             } else {
+            youLose();
             console.log('wrong selection')
             counter++;
             }
@@ -178,6 +179,22 @@ board.on('ready', function() {
         });
 
       }
+
+      function youLose () {
+
+           BUZZER.play({
+
+            song: [
+              ["A4", 1/2],
+              ["A3", 1/2],
+              ["A2", 1/2]
+            ],
+            tempo: 70
+
+          });
+
+        }
+
 
       playSong();
       createCPU_SEQUENCE(0);
